@@ -1,0 +1,29 @@
+{
+  "data_source": "yahoo",
+  "pattern_types": [
+    "morning_star"
+  ],
+  "scan_period": "6mo",
+  "notification": {
+    "email": {
+      "enabled": true,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "sender_email": "u23ai123@coed.svnit.ac.in",
+      "sender_password": "smkc ptjd cjae msal",
+      "recipient_email": "rudraydave@gmail.com",
+      "min_confidence_threshold": 65
+    }
+  },
+  "scan_settings": {
+    "min_volume": 100000,
+    "min_price": 5.0,
+    "max_price": 1000.0,
+    "pattern_lookback_days": 30
+  },
+  "output": {
+    "save_results": true,
+    "output_format": "csv",
+    "output_directory": "scan_results"
+  }
+}

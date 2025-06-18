@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Stock Pattern Alert</title>
+            <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        color: #000000;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border: 1px solid #000000;
+        border-radius: 8px;
+    }
+
+    .header {
+        background-color: #000000;
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 8px 8px 0 0;
+        text-align: center;
+    }
+
+    .summary {
+        padding: 20px;
+        border-bottom: 1px solid #000000;
+        background-color: #ffffff;
+    }
+
+    .pattern-list {
+        padding: 20px;
+    }
+
+    .pattern-item {
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin: 10px 0;
+        padding: 15px;
+        background-color: #ffffff;
+    }
+
+    .pattern-item.high {
+        border-left: 5px solid #008000; /* Green */
+    }
+
+    .pattern-item.medium {
+        border-left: 5px solid #0000ff; /* Blue */
+    }
+
+    .pattern-item.low {
+        border-left: 5px solid #ff0000; /* Red */
+    }
+
+    .pattern-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .symbol {
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .confidence {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+
+    .confidence.high {
+        background-color: #008000; /* Green */
+    }
+
+    .confidence.medium {
+        background-color: #0000ff; /* Blue */
+    }
+
+    .confidence.low {
+        background-color: #ff0000; /* Red */
+    }
+
+    .pattern-details {
+        color: #000000;
+        font-size: 14px;
+    }
+
+    .recommendation {
+        margin-top: 10px;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .recommendation.buy {
+        background-color: #d4f5d4; /* Light greenish */
+        color: #006400; /* Dark green */
+        border: 1px solid #008000;
+    }
+
+    .recommendation.sell {
+        background-color: #fcdcdc; /* Light red */
+        color: #8b0000; /* Dark red */
+        border: 1px solid #ff0000;
+    }
+
+    .footer {
+        padding: 20px;
+        background-color: #000000;
+        color: #ffffff;
+        border-radius: 0 0 8px 8px;
+        text-align: center;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-around;
+        margin: 15px 0;
+    }
+
+    .stat {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 22px;
+        font-weight: bold;
+        color: #0000ff; /* Blue */
+    }
+
+    .stat-label {
+        font-size: 13px;
+        color: #000000;
+    }
+</style>
+
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>🚨 Stock Pattern Scanner Alert</h1>
+                    <h2>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</h2>
+                </div>
+                
+                <div class="summary">
+                    <h3>📊 Scan Summary</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">{len(results)}</div>
+                            <div class="stat-label">Total Patterns</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">{summary.get('high_confidence_count', 0)}</div>
+                            <div class="stat-label">High Confidence</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">{summary.get('average_confidence', 0):.1f}%</div>
+                            <div class="stat-label">Avg Confidence</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pattern-list">
+                    <h3>🎯 Pattern Details</h3>
+        """
+        
+        for i, result in enumerate(results[:15], 1):
+            confidence = result['confidence_score']
+            confidence_class = 'high' if confidence >= 70 else 'medium' if confidence >= 50 else 'low'
+            confidence_emoji = "🔥" if confidence >= 80 else "⚡" if confidence >= 70 else "📊"
+            
+            recommendation_class = 'buy' if 'BUY' in result['recommendation'] else 'sell'
+            
+            html += f"""
+                    <div class="pattern-item {confidence_class}">
+                        <div class="pattern-header">
+                            <span class="symbol">{confidence_emoji} {result['symbol']}</span>
+                            <span class="confidence {confidence_class}">{confidence}% Confidence</span>
+                        </div>
+                        <div class="pattern-details">
+                            <strong>Pattern:</strong> {result['pattern_type'].replace('_', ' ').title()} | 
+                            <strong>Date:</strong> {result['pattern_date']} | 
+                            <strong>Price:</strong> ₹{result['close_price']:.2f} | 
+                            <strong>Volume:</strong> {result['volume']:,}
+                        </div>
+                        <div class="recommendation {recommendation_class}">
+                            📈 {result['recommendation']}
+                        </div>
+                    </div>
+            """
+        
+        if len(results) > 15:
+            html += f'<p><em>... and {len(results) - 15} more patterns</em></p>'
+        
+        html += """
+                </div>
+                
+                <div class="footer">
+                    <h4>⚠️ Trading Guidelines</h4>
+                    <p>• High confidence patterns (70%+): Consider for immediate action<br>
+                    • Always verify with additional technical analysis<br>
+                    • Set appropriate stop-losses • Risk management is key</p>
+                    <p><strong>Happy Trading! 📈</strong></p>
+                </div>
+            </div>
+        </body>
+        </html>

@@ -1,0 +1,23 @@
+# Enhanced Stock Pattern Scanner Requirements
+# Core data and analysis libraries
+yfinance>=0.2.25
+pandas>=1.5.0
+numpy>=1.24.0
+
+# Technical analysis library
+TA-Lib>=0.4.28
+
+# Email and notifications
+python-dotenv>=1.0.0
+
+# Automation and scheduling
+schedule>=1.2.0
+
+# Logging (built-in but good to specify)
+logging
+
+# Date/time handling (built-in)
+datetime
+
+# Additional utilities
+typing-extensions>=4.0.0
